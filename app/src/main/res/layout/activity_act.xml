@@ -2,76 +2,18 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="24dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
-
-        <!-- Hamilton logo -->
-        <ImageView
-            android:id="@+id/showLogo"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:src="@drawable/hamilton"
-            android:scaleType="fitCenter"
-            android:layout_marginBottom="16dp" />
-
-        <!-- Actor name -->
-        <TextView
-            android:id="@+id/realName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name: "
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_marginBottom="12dp" />
-
-        <!-- Role list -->
-        <TextView
-            android:id="@+id/roleList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Role(s):"
-            android:textSize="16sp"
-            android:layout_marginBottom="24dp" />
+        android:orientation="vertical">
 
         <TextView
-            android:id="@+id/sceneList"
+            android:id="@+id/sceneListTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Scenes will appear here"
+            android:text="Scenes will be listed here"
             android:textSize="16sp" />
-
-        <!-- Action Buttons -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
-
-            <Button
-                android:id="@+id/act1Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Act I" />
-
-            <Button
-                android:id="@+id/act2Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Act II"
-                android:layout_marginLeft="16dp" />
-
-            <Button
-                android:id="@+id/logoutButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Log Out"
-                android:layout_marginLeft="16dp" />
-        </LinearLayout>
-
     </LinearLayout>
 </ScrollView>

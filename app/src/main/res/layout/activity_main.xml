@@ -6,6 +6,13 @@
     android:padding="24dp"
     android:gravity="center"
     android:background="#FFFFFF">
+    \<ImageView
+    android:id="@+id/logoImage"
+    android:layout_width="400dp"
+    android:layout_height="400dp"
+    android:src="@drawable/broadway"
+    android:layout_gravity="center"
+    android:contentDescription="App Logo" />
 
     <EditText
         android:id="@+id/usernameInput"
