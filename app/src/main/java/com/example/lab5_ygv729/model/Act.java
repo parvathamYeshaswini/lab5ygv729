@@ -2,14 +2,14 @@ package com.example.lab5_ygv729.model;
 
 import android.content.Context;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Act {
     private int number;
-    private List<Scene> scenes;
+    private ArrayList<Scene> scenes;
 
     public Act(int number) {
         this.number = number;
@@ -18,36 +18,45 @@ public class Act {
 
     public void loadScenesFromFile(Context context, String fileName) {
         try {
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(context.getAssets().open(fileName))
-            );
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(":", 2);
-                if (parts.length < 2) continue;
+            InputStream is = context.getAssets().open(fileName);
+            Scanner scan = new Scanner(is);
 
-                String header = parts[0].trim();
-                String[] headerParts = header.split(" - ", 2);
-                if (headerParts.length < 2) continue;
+            while (scan.hasNextLine()) {
+                String temp = scan.nextLine().trim();
 
-                int sceneNum = Integer.parseInt(headerParts[0].trim());
-                String title = headerParts[1].replace("\"", "").trim();
+                // Split by colon (:) to separate title from roles
+                String[] sceneSplit = temp.split(":", 2);
+                if (sceneSplit.length < 2) continue;
 
-                Scene scene = new Scene(sceneNum, title);
+                // Left of colon: e.g., 1 - "Alexander Hamilton"
+                String[] leftSplit = sceneSplit[0].split("-", 2);
+                if (leftSplit.length < 2) continue;
 
-                String[] roleStrings = parts[1].split(",");
-                for (String role : roleStrings) {
-                    scene.addRole(new Role(role.trim()));
+                int sceneId = Integer.parseInt(leftSplit[0].trim());
+                String title = leftSplit[1].replace("\"", "").trim();
+
+                // Right of colon: list of roles
+                String[] rolesArray = sceneSplit[1].split(",");
+                ArrayList<Role> roleList = new ArrayList<>();
+                for (String role : rolesArray) {
+                    roleList.add(new Role(role.trim()));
+                }
+
+                Scene scene = new Scene(sceneId, title);
+                for (Role role : roleList) {
+                    scene.addRole(role);
                 }
 
                 scenes.add(scene);
             }
+
+            scan.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public List<Scene> getScenes() {
+    public ArrayList<Scene> getScenes() {
         return scenes;
     }
 
