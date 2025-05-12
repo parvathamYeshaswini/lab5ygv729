@@ -1,30 +1,50 @@
 package com.example.lab5_ygv729.model;
 
 import android.content.Context;
-import android.content.res.AssetManager;
-
 import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class User {
+public class User implements Serializable {
     private String username;
     private String password;
     private String realName;
     private List<Role> roles;
 
-    public User(String username, String password, String realName) {
+    public User(String username, String password, String realName, List<Role> roles) {
         this.username = username;
         this.password = password;
         this.realName = realName;
-        this.roles = new ArrayList<>();
+        this.roles = roles;
     }
 
-    public void addRole(Role role) {
-        roles.add(role);
+    public static User validate(Context context, String inputUsername, String inputPassword) {
+        try {
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(context.getAssets().open("users.csv"))
+            );
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 3) {
+                    String username = parts[0];
+                    String password = parts[1];
+                    String realName = parts[2];
+                    if (inputUsername.equals(username) && inputPassword.equals(password)) {
+                        List<Role> roles = new ArrayList<>();
+                        for (int i = 3; i < parts.length; i++) {
+                            roles.add(new Role(parts[i]));
+                        }
+                        return new User(username, password, realName, roles);
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String getRealName() {
@@ -33,39 +53,5 @@ public class User {
 
     public List<Role> getRoles() {
         return roles;
-    }
-
-    public static User validate(Context context, String inputUsername, String inputPassword) {
-        AssetManager am = context.getAssets();
-
-        try {
-            InputStream is = am.open("users.csv");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                String[] tokens = line.split(",");
-
-                String username = tokens[0];
-                String password = tokens[1];
-                String realName = tokens[2];
-
-                if (inputUsername.equals(username) && inputPassword.equals(password)) {
-                    User user = new User(username, password, realName);
-
-                    // Add roles (everything after the third field)
-                    for (int i = 3; i < tokens.length; i++) {
-                        user.addRole(new Role(tokens[i].trim()));
-                    }
-
-                    return user; // success
-                }
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return null; // login failed
     }
 }

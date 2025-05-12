@@ -1,77 +1,65 @@
 package com.example.lab5_ygv729;
 
-import android.content.res.AssetManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import com.example.lab5_ygv729.model.Act;
+import com.example.lab5_ygv729.model.Role;
+import com.example.lab5_ygv729.model.Scene;
+import com.example.lab5_ygv729.model.User;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ActActivity extends AppCompatActivity {
 
-    private TextView sceneList;
+    private TextView sceneListTextView;
+    private User currentUser;
+    private int actNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_act);
 
-        sceneList = findViewById(R.id.sceneList);
+        sceneListTextView = findViewById(R.id.sceneListTextView);
 
-        int actNumber = getIntent().getIntExtra("actNumber", 1);
-        String roleString = getIntent().getStringExtra("roles");
+        Intent intent = getIntent();
+        currentUser = (User) intent.getSerializableExtra("user");
+        actNumber = intent.getIntExtra("actNumber", 1);
 
-        List<String> userRoles = Arrays.asList(roleString.split("\n"));
-
-        try {
-            List<String> relevantScenes = loadScenesForRoles(actNumber, userRoles);
-            if (relevantScenes.isEmpty()) {
-                sceneList.setText("No scenes");
-            } else {
-                StringBuilder sb = new StringBuilder();
-                for (String scene : relevantScenes) {
-                    sb.append(scene).append("\n\n");
-                }
-                sceneList.setText(sb.toString());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            sceneList.setText("Error loading scenes");
-        }
+        loadAndDisplayScenes();
     }
 
-    private List<String> loadScenesForRoles(int actNumber, List<String> userRoles) throws IOException {
-        List<String> scenes = new ArrayList<>();
-        AssetManager assetManager = getAssets();
+    private void loadAndDisplayScenes() {
+        String fileName = (actNumber == 1) ? "act1.txt" : "act2.txt";
+        Act act = new Act(actNumber);
+        act.loadScenesFromFile(this, fileName);
 
-        String filename = (actNumber == 1) ? "act1.txt" : "act2.txt";
+        List<Scene> userScenes = new ArrayList<>();
 
-        InputStream is = assetManager.open(filename);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-
-        String line;
-        while ((line = reader.readLine()) != null) {
-            String[] parts = line.split("–|–|:"); // split on dash or colon
-            if (parts.length < 2) continue;
-
-            String sceneText = line.trim();
-            String characterList = line.substring(line.indexOf(":") + 1);
-
-            for (String role : userRoles) {
-                if (characterList.toLowerCase().contains(role.toLowerCase())) {
-                    scenes.add(sceneText);
-                    break; // only add scene once if any role matches
+        for (Scene scene : act.getScenes()) {
+            for (Role sceneRole : scene.getRoles()) {
+                for (Role userRole : currentUser.getRoles()) {
+                    if (sceneRole.getName().equalsIgnoreCase(userRole.getName())) {
+                        userScenes.add(scene);
+                        break;
+                    }
                 }
             }
         }
 
-        return scenes;
+        if (userScenes.isEmpty()) {
+            sceneListTextView.setText("no scenes");
+        } else {
+            StringBuilder result = new StringBuilder();
+            for (Scene s : userScenes) {
+                result.append("Scene ").append(s.getNumber()).append(": ").append(s.getTitle()).append("\n");
+            }
+            sceneListTextView.setText(result.toString());
+        }
     }
 }

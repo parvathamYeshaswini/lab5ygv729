@@ -2,69 +2,47 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:padding="24dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:orientation="vertical">
 
-        <!-- Hamilton logo -->
-        <ImageView
-            android:id="@+id/showLogo"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:src="@drawable/hamilton"
-            android:scaleType="fitCenter"
+        <TextView
+            android:id="@+id/nameTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Welcome!"
+            android:textSize="18sp"
+            android:textStyle="bold"
             android:layout_marginBottom="16dp" />
 
-        <!-- Actor name -->
         <TextView
-            android:id="@+id/realName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name: "
-            android:textStyle="bold"
-            android:textSize="18sp"
-            android:layout_marginBottom="12dp" />
-
-        <!-- Role list -->
-        <TextView
-            android:id="@+id/roleList"
+            android:id="@+id/rolesTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Role(s):"
-            android:textSize="16sp"
+            android:text="Your roles:"
             android:layout_marginBottom="24dp" />
 
-        <!-- Buttons -->
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/act1Button"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:text="View Act I" />
 
-            <Button
-                android:id="@+id/act1Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Act I" />
+        <Button
+            android:id="@+id/act2Button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View Act II"
+            android:layout_marginTop="8dp" />
 
-            <Button
-                android:id="@+id/act2Button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Act II"
-                android:layout_marginLeft="16dp" />
-
-            <Button
-                android:id="@+id/logoutButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Log Out"
-                android:layout_marginLeft="16dp" />
-        </LinearLayout>
-
+        <Button
+            android:id="@+id/logoutButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:layout_marginTop="24dp" />
     </LinearLayout>
 </ScrollView>
