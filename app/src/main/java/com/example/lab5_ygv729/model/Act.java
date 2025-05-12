@@ -22,27 +22,21 @@ public class Act {
             );
             String line;
             while ((line = reader.readLine()) != null) {
-                // Step 1: Split the line at any dash (en, em, or hyphen)
-                String[] parts = line.split("[–—-]", 2); // limit = 2 to avoid over-splitting
+                // Step 1: Split at colon (between title and roles)
+                String[] parts = line.split(":", 2);
                 if (parts.length < 2) continue;
 
-                // Step 2: Extract scene number and title
-                String header = parts[0].trim(); // e.g., 1
-                String sceneAndRoles = parts[1].trim(); // e.g., "Title" – Role1, Role2
+                // Step 2: Handle scene number and title from the first part
+                String header = parts[0].trim();  // e.g., 1 - "Alexander Hamilton"
+                String[] headerParts = header.split(" - ", 2);
+                if (headerParts.length < 2) continue;
 
-                // Extract scene title
-                int quoteStart = sceneAndRoles.indexOf("\"");
-                int quoteEnd = sceneAndRoles.indexOf("\"", quoteStart + 1);
-                if (quoteStart == -1 || quoteEnd == -1) continue;
+                int sceneNum = Integer.parseInt(headerParts[0].trim());
+                String title = headerParts[1].replace("\"", "").trim();
 
-                String title = sceneAndRoles.substring(quoteStart + 1, quoteEnd).trim();
-                String roleList = sceneAndRoles.substring(quoteEnd + 1).trim();
-
-                int sceneNum = Integer.parseInt(header);
-
+                // Step 3: Handle roles from the second part
+                String[] roleStrings = parts[1].split(",");
                 Scene scene = new Scene(sceneNum, title);
-
-                String[] roleStrings = roleList.split(",");
                 for (String role : roleStrings) {
                     scene.addRole(new Role(role.trim()));
                 }
@@ -53,9 +47,6 @@ public class Act {
             e.printStackTrace();
         }
     }
-
-
-
 
     public List<Scene> getScenes() {
         return scenes;
