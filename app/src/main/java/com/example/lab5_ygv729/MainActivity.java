@@ -34,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
                 User user = User.validate(MainActivity.this, username, password);
                 if (user != null) {
+                    for (int i = 0; i < user.getRoles().size(); i++) {
+                        android.util.Log.d("USER_ROLE", "User has role: '" + user.getRoles().get(i).getName() + "'");
+                    }
                     Intent intent = new Intent(MainActivity.this, RoleActivity.class);
                     intent.putExtra("user", user);
                     startActivity(intent);

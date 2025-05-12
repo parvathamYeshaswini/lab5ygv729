@@ -1,9 +1,12 @@
 package com.example.lab5_ygv729.model;
 
 import android.content.Context;
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Act {
@@ -42,6 +45,8 @@ public class Act {
                 }
 
                 scenes.add(scene);
+                Log.d("SCENE_DEBUG", "Loaded Scene: " + sceneNum + " - " + title + " with roles: " + Arrays.toString(roleStrings));
+
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -2,6 +2,7 @@ package com.example.lab5_ygv729;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,6 +45,8 @@ public class ActActivity extends AppCompatActivity {
         for (Scene scene : act.getScenes()) {
             for (Role sceneRole : scene.getRoles()) {
                 for (Role userRole : currentUser.getRoles()) {
+                    Log.d("MATCH_CHECK", "User role: '" + userRole.getName() + "' vs Scene role: '" + sceneRole.getName() + "'");
+
                     if (sceneRole.getName().equalsIgnoreCase(userRole.getName())) {
                         userScenes.add(scene);
                         break;
