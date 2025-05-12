@@ -42,22 +42,40 @@ public class ActActivity extends AppCompatActivity {
 
         List<Scene> userScenes = new ArrayList<>();
 
+        // Debug: Print user roles
+        for (Role r : currentUser.getRoles()) {
+            Log.d("DEBUG_USER_ROLE", "User has role: '" + r.getName() + "'");
+        }
+
+        // Debug: Print scene roles
+        for (Scene s : act.getScenes()) {
+            Log.d("DEBUG_SCENE", "Scene " + s.getNumber() + ": " + s.getTitle());
+            for (Role r : s.getRoles()) {
+                Log.d("DEBUG_SCENE_ROLE", " - Role in scene: '" + r.getName() + "'");
+            }
+        }
+
+        // Main logic: Match user roles with scene roles
         for (Scene scene : act.getScenes()) {
             for (Role sceneRole : scene.getRoles()) {
                 for (Role userRole : currentUser.getRoles()) {
+                    // Clean names: remove spaces, punctuation, make lowercase
                     String sceneRoleName = sceneRole.getName().trim().toLowerCase();
                     String userRoleName = userRole.getName().trim().toLowerCase();
 
-                    Log.d("ROLE_MATCH", "Comparing scene role '" + sceneRoleName + "' with user role '" + userRoleName + "'");
+                    Log.d("ROLE_MATCH_DEBUG", "Comparing scene role '" + sceneRoleName + "' with user role '" + userRoleName + "'");
 
                     if (sceneRoleName.equals(userRoleName)) {
-                        userScenes.add(scene);
-                        break;
+                        if (!userScenes.contains(scene)) {
+                            userScenes.add(scene);
+                            Log.d("MATCH_FOUND", "✅ MATCH FOUND: Scene " + scene.getNumber() + " for role '" + userRoleName + "'");
+                        }
                     }
                 }
             }
         }
 
+        // Display matched scenes
         if (userScenes.isEmpty()) {
             sceneListTextView.setText("no scenes");
         } else {

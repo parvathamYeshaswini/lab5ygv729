@@ -1,6 +1,8 @@
 package com.example.lab5_ygv729.model;
 
 import android.content.Context;
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.Serializable;
@@ -27,18 +29,30 @@ public class User implements Serializable {
             );
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                if (parts.length >= 3) {
-                    String username = parts[0];
-                    String password = parts[1];
-                    String realName = parts[2];
-                    if (inputUsername.equals(username) && inputPassword.equals(password)) {
-                        List<Role> roles = new ArrayList<>();
-                        for (int i = 3; i < parts.length; i++) {
-                            roles.add(new Role(parts[i]));
+                // First split only on first 3 commas to get username, password, realName
+                String[] firstParts = line.split(",", 4); // limit = 4
+                if (firstParts.length < 3) continue;
+
+                String username = firstParts[0].trim();
+                String password = firstParts[1].trim();
+                String realName = firstParts[2].trim();
+
+                if (inputUsername.equals(username) && inputPassword.equals(password)) {
+                    List<Role> roles = new ArrayList<>();
+
+                    if (firstParts.length == 4) {
+                        // Now split remaining roles safely
+                        String[] roleParts = firstParts[3].split(",");
+                        for (String role : roleParts) {
+                            if (!role.trim().isEmpty()) {
+                                // Remove anything in parentheses (e.g., "Alexander Hamilton (Hamilton)" => "Hamilton")
+                                String cleaned = role.replaceAll(".*\\((.*?)\\)", "$1").trim();
+                                roles.add(new Role(cleaned));
+                            }
                         }
-                        return new User(username, password, realName, roles);
                     }
+
+                    return new User(username, password, realName, roles);
                 }
             }
         } catch (Exception e) {

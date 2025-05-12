@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#FFF">
 
-    <!-- Logo Image at the absolute top -->
+    <!-- Logo -->
     <ImageView
         android:id="@+id/logoImage"
         android:layout_width="0dp"
@@ -15,20 +15,34 @@
         android:contentDescription="Broadway Logo"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="0dp" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Scene List -->
-    <TextView
-        android:id="@+id/sceneListTextView"
+    <!-- Scrollable Text -->
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:padding="16dp"
-        android:textSize="16sp"
-        android:text="Scenes will be listed here"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintTop_toBottomOf="@id/logoImage"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/sceneListTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textColor="#000"
+                android:text="Scenes will be listed here"
+                android:lineSpacingExtra="8dp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
