@@ -45,9 +45,12 @@ public class ActActivity extends AppCompatActivity {
         for (Scene scene : act.getScenes()) {
             for (Role sceneRole : scene.getRoles()) {
                 for (Role userRole : currentUser.getRoles()) {
-                    Log.d("MATCH_CHECK", "User role: '" + userRole.getName() + "' vs Scene role: '" + sceneRole.getName() + "'");
+                    String sceneRoleName = sceneRole.getName().trim().toLowerCase();
+                    String userRoleName = userRole.getName().trim().toLowerCase();
 
-                    if (sceneRole.getName().equalsIgnoreCase(userRole.getName())) {
+                    Log.d("ROLE_MATCH", "Comparing scene role '" + sceneRoleName + "' with user role '" + userRoleName + "'");
+
+                    if (sceneRoleName.equals(userRoleName)) {
                         userScenes.add(scene);
                         break;
                     }
