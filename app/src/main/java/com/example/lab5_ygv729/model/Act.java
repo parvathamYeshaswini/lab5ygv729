@@ -22,19 +22,40 @@ public class Act {
             );
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] parts = line.split(",");
-                int sceneNum = Integer.parseInt(parts[0]);
-                String title = parts[1].replace("\"", "");
+                // Step 1: Split the line at any dash (en, em, or hyphen)
+                String[] parts = line.split("[–—-]", 2); // limit = 2 to avoid over-splitting
+                if (parts.length < 2) continue;
+
+                // Step 2: Extract scene number and title
+                String header = parts[0].trim(); // e.g., 1
+                String sceneAndRoles = parts[1].trim(); // e.g., "Title" – Role1, Role2
+
+                // Extract scene title
+                int quoteStart = sceneAndRoles.indexOf("\"");
+                int quoteEnd = sceneAndRoles.indexOf("\"", quoteStart + 1);
+                if (quoteStart == -1 || quoteEnd == -1) continue;
+
+                String title = sceneAndRoles.substring(quoteStart + 1, quoteEnd).trim();
+                String roleList = sceneAndRoles.substring(quoteEnd + 1).trim();
+
+                int sceneNum = Integer.parseInt(header);
+
                 Scene scene = new Scene(sceneNum, title);
-                for (int i = 2; i < parts.length; i++) {
-                    scene.addRole(new Role(parts[i]));
+
+                String[] roleStrings = roleList.split(",");
+                for (String role : roleStrings) {
+                    scene.addRole(new Role(role.trim()));
                 }
+
                 scenes.add(scene);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
+
 
     public List<Scene> getScenes() {
         return scenes;
