@@ -38,14 +38,7 @@
             android:textSize="16sp"
             android:layout_marginBottom="24dp" />
 
-        <TextView
-            android:id="@+id/sceneList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Scenes will appear here"
-            android:textSize="16sp" />
-
-        <!-- Action Buttons -->
+        <!-- Buttons -->
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
